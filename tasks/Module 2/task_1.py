@@ -27,7 +27,7 @@ def display_inventory(inventory):
 def add_to_inventory(inventory, added_items):
     """Add items from list to inventory."""
     skipped = {}
-    added = 0
+    added_items_number = 0
     rubbish = ['rubbish', 'chewed gum', 'used tissue']
 
     for item in added_items:
@@ -41,19 +41,18 @@ def add_to_inventory(inventory, added_items):
                 inventory[item] += 1
             else:
                 inventory[item] = 1
-            added += 1
-    print('added {} items to inventory'.format(added))
+            added_items_number += 1
+    print(f'added {added_items_number} items to inventory')
     print('Skipped:')
     for key, value in skipped.items():
         print(value, key)
     print()
     return inventory
-    # your code goes here
 
 
-inv = {'gold coin': 42, 'rope': 1}
-dragonLoot = [
+hero_inventory = {'gold coin': 42, 'rope': 1}
+dragon_loot = [
     'gold coin', 'chewed gum', 'dagger', 'gold coin', 'gold coin', 'ruby',
     'rubbish', 'chewed gum', 'used tissue']
-inv = add_to_inventory(inv, dragonLoot)
-display_inventory(inv)
+inv = add_to_inventory(hero_inventory, dragon_loot)
+display_inventory(hero_inventory)
