@@ -4,7 +4,7 @@
 def display_inventory(inventory):
     """Print inventory."""
     print('Inventory:')
-    items = 0
+    items_count = 0
     # check that inventory is a dict
     if not isinstance(inventory, dict):
         print('Wrong inventory type. Should be dict')
@@ -12,15 +12,15 @@ def display_inventory(inventory):
     # print inventory and calculate sum of items
     for key, value in inventory.items():
         print(value, key)
-        items += value
+        items_count += value
     print()
     # check number of item and print according caution if needed
-    print('Total number of items:', items, end='\n\n')
-    if 60 <= items <= 69:
+    print('Total number of items:', items_count, end='\n\n')
+    if 60 <= items_count <= 69:
         print('CAUTION: Your backpack weighs a lot, your stamina runs out quicker!')
-    elif 70 <= items <= 79:
+    elif 70 <= items_count <= 79:
         print('CAUTION: Your equipment is very heavy, you\'re moving slower than usual!')
-    elif items >= 80:
+    elif items_count >= 80:
         print('CAUTION: You are overloaded, can\'t move!')
 
 
