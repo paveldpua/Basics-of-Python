@@ -1,58 +1,58 @@
 """Sort."""
 
 
-def merge(A: list, B: list):
-    """Merge 2 sorted lists and return result."""
+def merge(list_a: list, list_b: list):
+    """list_merge 2 sorted lists and return result."""
     i = j = 0
-    C = list()
-    while i < len(A) and j < len(B):
-        if A[i] <= B[j]:
-            C.append(A[i])
+    list_c = list()
+    while i < len(list_a) and j < len(list_b):
+        if list_a[i] <= list_b[j]:
+            list_c.append(list_a[i])
             i += 1
         else:
-            C.append(B[j])
+            list_c.append(list_b[j])
             j += 1
-    C.extend(A[i:] + B[j:])
-    return C
+    list_c.extend(list_a[i:] + list_b[j:])
+    return list_c
 
 
-def merge_sort(A: list):
-    """Merge sort."""
-    # print(A)
-    if len(A) <= 1:
-        return A
-    middle = len(A)//2
-    L = A[:middle]
-    R = A[middle:]
-    merge_sort(L)
-    merge_sort(R)
-    # print(f'merge L {L} and R {R}')
-    C = merge(L, R)
-    A[:] = C
-    # print(f'A after merge is {A}')
-    return A
+def merge_sort(list_a: list):
+    """list_merge sort."""
+    # print(list_a)
+    if len(list_a) <= 1:
+        return list_a
+    middle = len(list_a)//2
+    list_left = list_a[:middle]
+    list_right = list_a[middle:]
+    merge_sort(list_left)
+    merge_sort(list_right)
+    # print(f'merge list_left {list_left} and list_right {list_right}')
+    list_c = merge(list_left, list_right)
+    list_a[:] = list_c
+    # print(f'list_a after merge is {list_a}')
+    return list_a
 
 
-def hoar_sort(A: list):
+def hoar_sort(list_a: list):
     """Hoar sort."""
-    # print(A)
-    if len(A) <= 1:
-        return A
-    barrier = A[0]
-    L = []
-    M = []
-    R = []
-    for x in A:
-        if x < barrier:
-            L.append(x)
-        if x == barrier:
-            M.append(x)
-        if x > barrier:
-            R.append(x)
-    hoar_sort(L)
-    hoar_sort(R)
-    A[:] = L + M + R
-    return A
+    # print(list_a)
+    if len(list_a) <= 1:
+        return list_a
+    barrier = list_a[0]
+    list_left = []
+    list_m = []
+    list_right = []
+    for element in list_a:
+        if element < barrier:
+            list_left.append(element)
+        if element == barrier:
+            list_m.append(element)
+        if element > barrier:
+            list_right.append(element)
+    hoar_sort(list_left)
+    hoar_sort(list_right)
+    list_a[:] = list_left + list_m + list_right
+    return list_a
 
 
 if __name__ == '__main__':
