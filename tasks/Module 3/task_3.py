@@ -1,5 +1,5 @@
-def generate_numbers(N:int, M:int, prefix=None):
-    '''Generate all numbers with 0 prefix in N meter system.'''
+def generate_numbers(N: int, M: int, prefix=None):
+    """Generate all numbers with 0 prefix in N meter system."""
     prefix = prefix or []
     if M == 0:
         print(*prefix)
@@ -9,7 +9,9 @@ def generate_numbers(N:int, M:int, prefix=None):
         generate_numbers(N, M-1, prefix)
         prefix.pop()
 
+
 def gen_bin(M, prefix=''):
+    """Generate all numbers for binary system."""
     if M == 0:
         print(*prefix)
         return
@@ -17,20 +19,22 @@ def gen_bin(M, prefix=''):
         gen_bin(M-1, prefix+digit)
 
 
-
-def generate_permutations(N:int, M:int, prefix=None):
-    '''Generate permutations for N numbers in M positions
-    with prefix.'''
+def generate_permutations(N: int, M: int, prefix=None):
+    """Generate permutations for N numbers in M positions
+    with prefix."""
     prefix = prefix or []
     if M == 0:
         print(*prefix)
         return
     for number in range(1, N+1):
-        if number in prefix: continue
+        if number in prefix:
+            continue
         prefix.append(number)
         generate_permutations(N, M-1, prefix)
         prefix.pop()
- 
-generate_numbers(4,3)
-print()
-generate_permutations(4,3)
+
+
+if __name__ == '__main__':
+    generate_numbers(4, 3)
+    print()
+    generate_permutations(4, 3)
