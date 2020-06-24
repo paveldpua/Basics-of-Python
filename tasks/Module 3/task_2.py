@@ -1,10 +1,13 @@
 """My split function."""
 
 
-def my_split(source_string, separator):
+def my_split(source_string, separator=None):
     """My implementation of split() function."""
     if separator is None:
-        raise TypeError('Please provide separator')
+        separator = ' '
+    if separator == '':
+        raise ValueError('Please provide a valid separator.'
+                         'It can not be an empty string')
     result = []
     if len(source_string) < len(separator):
         return [source_string]

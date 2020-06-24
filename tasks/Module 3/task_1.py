@@ -1,5 +1,4 @@
 """Sandwich calculator."""
-import collections
 import pyinputplus as pyip
 
 BREAD_COST = {"wheat": 1, "white": 1.5, "sourdough": 1.5}
@@ -15,29 +14,27 @@ def print_section_header(string: str):
 
 def make_sandwiches():
     """Build sandwich."""
-    options = collections.defaultdict(int)
+    options = {}
     print("Welcome to the sandwich ordering program!!! "
           "Please choose ingredients for your sandwich:")
     print_section_header('BREAD')
     bread = pyip.inputMenu(list(BREAD_COST.keys()))
-    options[bread] = 1
+    options[bread] = BREAD_COST[bread]
     print_section_header('MEAT')
     meat = pyip.inputMenu(list(MEAT_COST.keys()))
-    options[meat] = 1
+    options[meat] = MEAT_COST[meat]
     if pyip.inputYesNo('Would you like a cheese? ') == 'yes':
         cheese = pyip.inputMenu(list(CHEESE_COST.keys()))
-        options[cheese] = 1
+        options[cheese] = CHEESE_COST[cheese]
     else:
         cheese = ''
     if pyip.inputYesNo('Would you like a sauce? ') == 'yes':
         sauce = pyip.inputMenu(list(SAUCE_COST.keys()))
-        options[sauce] = 1
+        options[sauce] = SAUCE_COST[sauce]
     else:
         sauce = ''
     number = int(pyip.inputNum("How many sandwiches you want? ", min=1))
-    total_cost = (BREAD_COST[bread] + MEAT_COST[meat] +
-                  (CHEESE_COST[cheese] if cheese else 0) +
-                  (SAUCE_COST[sauce] if sauce else 0)) * number
+    total_cost = (sum(options.values())) * number
 
     print(f"Your sandwich consists of {', '.join(options)}. "
           f"You wanted {number} sandwich(es). That's a total of "
