@@ -26,13 +26,9 @@ def make_sandwiches():
     if pyip.inputYesNo('Would you like a cheese? ') == 'yes':
         cheese = pyip.inputMenu(list(CHEESE_COST.keys()))
         options[cheese] = CHEESE_COST[cheese]
-    else:
-        cheese = ''
     if pyip.inputYesNo('Would you like a sauce? ') == 'yes':
         sauce = pyip.inputMenu(list(SAUCE_COST.keys()))
         options[sauce] = SAUCE_COST[sauce]
-    else:
-        sauce = ''
     number = int(pyip.inputNum("How many sandwiches you want? ", min=1))
     total_cost = (sum(options.values())) * number
 

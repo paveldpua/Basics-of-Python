@@ -3,11 +3,11 @@
 
 def my_split(source_string, separator=None):
     """My implementation of split() function."""
-    if separator is None:
-        separator = ' '
     if separator == '':
         raise ValueError('Please provide a valid separator.'
                          'It can not be an empty string')
+    if separator is None:
+        separator = ' '
     result = []
     if len(source_string) < len(separator):
         return [source_string]
