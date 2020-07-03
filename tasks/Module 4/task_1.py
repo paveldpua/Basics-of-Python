@@ -2,25 +2,23 @@
 import os
 import re
 
-TEMPLATE = ['ADJECTIVE', 'NOUN', 'ADVERB', 'VERB']
+PLACEHOLDERS = ['ADJECTIVE', 'NOUN', 'ADVERB', 'VERB']
+PATTERN = re.compile(f'{"|".join(PLACEHOLDERS)}')
 
 
 def mad_lib(source_file_path):
     """Repace placeholders with user inputs."""
-    tmp_file = source_file_path + '.tmp'
+    output_file = source_file_path + '.fixed'
     with open(source_file_path, 'r') as read_file:
-        with open(tmp_file, 'w') as write_file:
+        with open(output_file, 'w') as write_file:
             for line in read_file:
-                pattern = re.compile(f'{"|".join(TEMPLATE)}')
-                matches = pattern.finditer(line)
+                matches = PATTERN.finditer(line)
                 for match in matches:
                     filler = match.group(0)
                     replace = input(f'Enter an {filler.lower()}: ')
                     line = line.replace(filler, replace, 1)
                 print(line)
                 write_file.write(line)
-    os.remove(source_file_path)
-    os.rename(tmp_file, source_file_path)
 
 
 if __name__ == '__main__':

@@ -5,3 +5,4 @@ pydocstyle
 pyinputplus
 pytest
 openpyxl
+ezsheets
