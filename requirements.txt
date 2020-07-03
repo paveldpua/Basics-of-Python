@@ -6,3 +6,4 @@ pyinputplus
 pytest
 openpyxl
 ezsheets
+PyPDF2==1.26.0
