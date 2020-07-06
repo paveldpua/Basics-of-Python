@@ -4,13 +4,15 @@ import csv
 import openpyxl
 
 
-def xl_to_csv(xl_file):
-    """Excel-to-CSV Converter."""
-    os.chdir(os.path.dirname(xl_file) if os.path.dirname(xl_file) else '.')
-    work_book = openpyxl.load_workbook(xl_file)
+def xlsx_to_csv(xlsx_file):
+    """Convert Excel worksheet to CSV files by writing each sheet into separate CSV file."""
+    work_book = openpyxl.load_workbook(xlsx_file)
     for sheet in work_book.worksheets:
-        output_file = f'{os.path.splitext(os.path.basename(xl_file))[0]}_{sheet.title}.csv'
-        with open(output_file, 'w', newline='') as csv_file:
+        output_filename = f'{os.path.splitext(os.path.basename(xlsx_file))[0]}_{sheet.title}.csv'
+        output_filepath = os.path.join(os.path.dirname(xlsx_file)
+                                       if os.path.dirname(xlsx_file) else '.',
+                                       output_filename)
+        with open(output_filepath, 'w', newline='') as csv_file:
             csv_writer = csv.writer(csv_file)
             for row in sheet.values:
                 csv_writer.writerow(row)
@@ -18,4 +20,4 @@ def xl_to_csv(xl_file):
 
 if __name__ == '__main__':
     os.chdir(os.path.dirname(__file__))
-    xl_to_csv('input.xlsx')
+    xlsx_to_csv('input.xlsx')

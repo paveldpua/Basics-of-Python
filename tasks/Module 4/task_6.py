@@ -1,5 +1,6 @@
 """Brute-Force PDF Password Breaker."""
 import os
+
 import PyPDF2
 
 
