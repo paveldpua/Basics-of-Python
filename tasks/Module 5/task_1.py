@@ -68,7 +68,7 @@ class Inventory:
     def check_weight(self):
         """Check waight and return severity."""
         severity = 0
-        items_weight = sum(map(lambda x: x.weight, self.storage))
+        items_weight = self.weight
         if LIGHT_WEIGHT_THRESHOLD <= items_weight < HEAVY_WEIGHT_THRESHOLD:
             print('CAUTION: Your backpack weighs a lot, your stamina runs out quicker!')
             severity = 1
@@ -80,15 +80,16 @@ class Inventory:
             severity = 3
         return severity
 
-    def get_weight(self):
+    @property
+    def weight(self):
         """Get weight."""
-        return sum(map(lambda x: x.weight, self.storage))
+        return sum(x.weight for x in self.storage)
 
     def __str__(self):
         """Print inventory."""
         to_print = 'Inventory:\n'
         items_count = 0
-        items_weight = sum(map(lambda x: x.weight, self.storage))
+        items_weight = self.weight
         for key, value in self.inventory.items():
             to_print += str(value) + ' ' + str(key) + '\n'
             items_count += value
