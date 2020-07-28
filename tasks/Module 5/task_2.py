@@ -7,7 +7,11 @@ from task_1 import Item, Inventory, LIGHT_WEIGHT_THRESHOLD
 FOOD = ["apple", "wine", "chicken", "bread"]
 EXCLUDE_ITEMS = ["chewed gum", "used tissue"]
 ITEMS = ["gold coin", "ruby", "dagger", "rope", "sword", "shield"] + FOOD + EXCLUDE_ITEMS
-MOVES = ["north", "south", "west", "east", "l", "r", "u", "d"]
+MOVE_DOWN = {"south", "d"}
+MOVE_UP = {"north", "u"}
+MOVE_LEFT = {"west", "l"}
+MOVE_RIGHT = {"east", "r"}
+MOVES = [MOVE_UP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT]
 HERO_SYMBOL = 'H'
 ITEM_SYMBOL = 'X'
 
@@ -30,13 +34,12 @@ class GameItem(Item):
 class Hero:
     """Class Hero."""
 
-    def __init__(self, row, columm):
+    def __init__(self, column, row):
         """Init Hero."""
         super().__init__()
         self.inv = Inventory()
         self.stamina = 50
-        self.position = (row - 1, columm - 1)
-        self.can_move = True
+        self.position = (row - 1, column - 1)
 
     def set_position(self, row, colum):
         """Set initial posision of hero on a field."""
@@ -78,9 +81,11 @@ class Hero:
             self.get_stats()
             responce = input("Write an item name to drop: ").rstrip()
             self.drop_item(responce)
-        if self.inv.check_weight() < 3:
-            self.can_move = True
         return self.can_move
+
+    @property
+    def can_move(self):
+        return self.inv.check_weight() < 3
 
 
 class Board:
@@ -115,7 +120,7 @@ class Board:
         """Move hero."""
         initial_position = hero.position
         # print('initial position', initial_position)
-        if direction in ("north", "u"):
+        if direction in MOVE_UP:
             # to not cross border
             aligned_init_pos = (
                 len(self.field) if initial_position[0] == 0 else initial_position[0]
@@ -126,7 +131,7 @@ class Board:
             self.field[aligned_init_pos - 1][initial_position[1]] = HERO_SYMBOL
             # change hepo position on hero object
             hero.position = (aligned_init_pos - 1, initial_position[1])
-        elif direction in ("south", "d"):
+        elif direction in MOVE_DOWN:
             aligned_init_pos = (
                 -1
                 if initial_position[0] == len(self.field) - 1
@@ -135,14 +140,14 @@ class Board:
             cell_content = self.field[aligned_init_pos + 1][initial_position[1]]
             self.field[aligned_init_pos + 1][initial_position[1]] = HERO_SYMBOL
             hero.position = (aligned_init_pos + 1, initial_position[1])
-        elif direction in ("west", "l"):
+        elif direction in MOVE_LEFT:
             aligned_init_pos = (
                 len(self.field[0]) if initial_position[1] == 0 else initial_position[1]
             )
             cell_content = self.field[initial_position[0]][aligned_init_pos - 1]
             self.field[initial_position[0]][aligned_init_pos - 1] = HERO_SYMBOL
             hero.position = (initial_position[0], aligned_init_pos - 1)
-        elif direction in ("east", "r"):
+        elif direction in MOVE_RIGHT:
             aligned_init_pos = (
                 -1
                 if initial_position[1] == len(self.field[0]) - 1
@@ -175,10 +180,10 @@ class Game:
 
     def __init__(self, columns, rows, hero):
         """Init Game instance."""
-        self.field = Board(columns, rows)
-        self.field.place_items()
+        self.board = Board(columns, rows)
         self.hero = hero
-        self.field.set_hero(self.hero)
+        self.board.set_hero(self.hero)
+        self.board.place_items()
         self.debug = False
 
     def __handle_responce(self, responce):
@@ -189,11 +194,11 @@ class Game:
             print(self.hero.inv)
             responce = input("What to drop? ").rstrip()
             self.hero.inv.remove_item(responce)
-        if responce in MOVES:
+        if responce in (x for MOVE in MOVES for x in MOVE):
             self.hero.stamina -= (
                 1 if self.hero.inv.weight < LIGHT_WEIGHT_THRESHOLD else 4
             )
-            cell_content = self.field.move_hero(self.hero, responce)
+            cell_content = self.board.move_hero(self.hero, responce)
             if self.debug:
                 print(cell_content, cell_content.__class__)
             if self.debug:
@@ -204,26 +209,24 @@ class Game:
                     return
                 print(f"New item found! It is a {cell_content.name}")
                 self.hero.inv.add_item(cell_content)
-                if self.hero.inv.check_weight() > 2:
-                    self.hero.can_move = False
                 if self.debug:
                     print(self.hero.inv)
 
     def play(self):
         """Run main play loop."""
-        print(" LET GAME BEGINS ".center(50, "="))
-        while any(isinstance(x, GameItem) for row in self.field.field for x in row):
+        print(" LET GAME BEGINS ".center(41, "="))
+        while any(isinstance(x, GameItem) for row in self.board.field for x in row):
             if not self.hero.check_weight():
                 continue
             if self.hero.check_heal() < 0:
                 break
-            print(self.field)
+            print(self.board)
             responce = input("Choose an action: ").rstrip()
             if responce in ("exit", "q"):
                 break
             self.__handle_responce(responce)
         else:
-            print(self.field)
+            print(self.board)
             self.hero.get_stats()
 
 
