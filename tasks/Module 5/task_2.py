@@ -5,8 +5,8 @@ from task_1 import Item, Inventory, LIGHT_WEIGHT_THRESHOLD
 
 
 FOOD = ["apple", "wine", "chicken", "bread"]
-RUBBISH = ["chewed gum", "used tissue"]
-ITEMS = ["gold coin", "ruby", "dagger", "rope", "sword", "shield"] + FOOD + RUBBISH
+EXCLUDE_ITEMS = ["chewed gum", "used tissue"]
+ITEMS = ["gold coin", "ruby", "dagger", "rope", "sword", "shield"] + FOOD + EXCLUDE_ITEMS
 MOVES = ["north", "south", "west", "east", "l", "r", "u", "d"]
 HERO_SYMBOL = 'H'
 ITEM_SYMBOL = 'X'
@@ -20,7 +20,7 @@ class GameItem(Item):
 
     def is_rubbish(self):
         """Check if Item is rubbish."""
-        return self.name in RUBBISH
+        return self.name in EXCLUDE_ITEMS
 
     def is_food(self):
         """Check if Item is food."""
@@ -100,7 +100,7 @@ class Board:
         """Initialize field with items."""
         for row in self.field:
             item_name = choice(ITEMS)
-            cost = 0 if item_name in RUBBISH else randint(1, 5)
+            cost = 0 if item_name in EXCLUDE_ITEMS else randint(1, 5)
             heal = 0 if item_name not in FOOD else randint(5, 10)
             random_position = randint(0, len(row) - 1)
             if row[random_position] != HERO_SYMBOL:
