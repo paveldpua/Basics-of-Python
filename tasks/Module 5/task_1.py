@@ -21,7 +21,7 @@ class Item:
 class Inventory:
     """Inventory class."""
 
-    RUBBISH = ['rubbish', 'chewed gum', 'used tissue']
+    EXCLUDE_ITEMS = ['rubbish', 'chewed gum', 'used tissue']
     FOOD = ['apple', 'wine', 'chicken', 'bread']
 
     def __init__(self):
@@ -32,14 +32,14 @@ class Inventory:
 
     def add_item(self, item):
         """Add items to inventory."""
-        if item.name in self.RUBBISH:
+        if item.name in self.EXCLUDE_ITEMS:
             print(f'{item.name} was no added to inventory as it is rubbish\n')
         else:
             self.inventory[item.name] += 1
             self.storage.append(item)
 
     def remove_item(self, item_name):
-        """Remove item from inventiry."""
+        """Remove item from inventory."""
         if self.inventory[item_name] > 0:
             for i, item in enumerate(self.storage):
                 if item.name == item_name:
@@ -53,7 +53,7 @@ class Inventory:
         skipped = collections.defaultdict(int)
         added_items_number = 0
         for item in items:
-            if item.name in self.RUBBISH:
+            if item.name in self.EXCLUDE_ITEMS:
                 skipped[item.name] += 1
             else:
                 self.inventory[item.name] += 1
