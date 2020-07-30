@@ -99,7 +99,11 @@ class Board:
 
     def set_hero(self, hero):
         """Set hero to position."""
-        self.field[hero.position[0]][hero.position[1]] = HERO_SYMBOL
+        if not isinstance(self.field[hero.position[0]][hero.position[1]], GameItem):
+            self.field[hero.position[0]][hero.position[1]] = HERO_SYMBOL
+        else:
+            self.field[hero.position[0]][hero.position[1] + 1] = HERO_SYMBOL
+            print(f'WARNING!!! Herpo position {hero.position[0], hero.position[1]} are occupied, so we moe Hero to the right')
 
     def place_items(self):
         """Initialize field with items."""
@@ -186,7 +190,7 @@ class Game:
         self.board.place_items()
         self.debug = False
 
-    def __handle_responce(self, responce):
+    def _handle_responce(self, responce):
         if responce in ("stats", "s"):
             self.hero.get_stats()
             _ = input()
@@ -224,7 +228,7 @@ class Game:
             responce = input("Choose an action: ").rstrip()
             if responce in ("exit", "q"):
                 break
-            self.__handle_responce(responce)
+            self._handle_responce(responce)
         else:
             print(self.board)
             self.hero.get_stats()
